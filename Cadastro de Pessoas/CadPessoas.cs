@@ -41,8 +41,7 @@ namespace CadastroDePessoas
                     Console.WriteLine("Opção invalida! Tente novamente!");
                     validador = false;
                 }
-                //decimal opi = Convert.ToDecimal(operacao);
-                //opcao = opi;
+
             } while (operacao != "1" && operacao != "2" && operacao != "3" && operacao != "4");
             return Convert.ToInt32(operacao);
         }
@@ -52,8 +51,9 @@ namespace CadastroDePessoas
             List<Pessoa> lista = new List<Pessoa>();
             string nomePessoa = "", entrada, entradadois;
             int id = 0, idade = 0;
-            bool valida, valido, validador;
+            bool valida, valido;
             decimal isNumero;
+            double isNumero2;
             var versao = new Menu();
             versao.ApresentarHora();
 
@@ -75,38 +75,28 @@ namespace CadastroDePessoas
                             {
                                 Console.Write("Altura: ");
                                 entrada = Console.ReadLine();
-                                pessoa.Altura = Convert.ToDecimal(decimal.TryParse(entrada, out isNumero));
-                                validador = false;
-                                valido = decimal.TryParse(entrada, out isNumero);
-                                if (!valido)
+                                valido = double.TryParse(entrada, out isNumero2);
+                                if (!valido || isNumero2 <= 0 || isNumero2 >= 2.45)
                                 {
-                                    Console.WriteLine("Digite um número válido.");
+                                    Console.WriteLine("Digite uma altura valida.");
                                 }
                             }
-                            while (!valido);
-                            //return Convert.ToInt32(isNumero);
+                            while (!valido || isNumero2 <= 0 || isNumero2 >= 2.45);
+                            pessoa.Altura = Convert.ToDecimal(isNumero2);
 
                             do
                             {
 
                                 Console.Write("Idade: ");
                                 entradadois = Console.ReadLine();
-                                pessoa.Idade = Convert.ToDecimal(decimal.TryParse(entrada, out isNumero));
                                 valido = decimal.TryParse(entradadois, out isNumero);
-
-                                if (pessoa.Idade == 0 || pessoa.Idade >= 100)
+                                if (!valido || isNumero <= 0 || isNumero >= 100)
                                 {
                                     Console.WriteLine("Idade não pode ser 0 ou maior que 100");
-                                    validador = false;
                                 }
-                                
-                                else if (!valido)
-                                {
-                                    Console.WriteLine("Digite um número válido.");
-                                }
-                                validador = false;
 
-                            } while (!valido);
+                            } while (!valido || isNumero <= 0 || isNumero >= 100);
+                            pessoa.Idade = isNumero;
 
                             funcP.Inserir(pessoa);
                             lista = funcP.Listar(nomePessoa);
